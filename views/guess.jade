@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title Guess
+  link(rel="stylesheet", href="/stylesheets/guess.css")
+      
+  body
+    h1 Guess the Number!
+    .grid
+      - for (var i = 1; i <= 100; i++)
+        button.num-button
+          span.number #{i}
+    script(src="/javascripts/guess.js")

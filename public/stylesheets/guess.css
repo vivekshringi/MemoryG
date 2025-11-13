@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.4em;
+    color: #333;
+    margin-top: 30px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 18px;
+    padding: 30px 40px 50px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.num-button {
+    background: #4285f4;
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(66, 133, 244, 0.2);
+    padding: 0;
+    cursor: pointer;
+    transition: box-shadow 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90px;
+}
+
+.num-button:hover {
+    box-shadow: 0 4px 18px rgba(66, 133, 244, 0.36);
+    background: #0b0339;
+}
+
+.num-button .number {
+    font-size: 2.3em;
+    font-weight: 600;
+    color: #f4f7fb;
+    margin-bottom: 6px;
+}
+
+.num-button:hover .number {
+    color: #0950de;
+}

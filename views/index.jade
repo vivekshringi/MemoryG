@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome Flashcard
+
+  form(action="/users" method="POST")
+    div
+      label(for="name") Name:
+      input(type="text" name="name" id="name")
+    div
+      label(for="owner") Owner:
+      input(type="text" name="owner" id="owner")
+    div
+      label(for="birth") Birth:
+      input(type="text" name="birth" id="birth")
+    div
+      button(type="submit") Submit
+      button(type="submit") View All 
+      button(type="submit") Delete
