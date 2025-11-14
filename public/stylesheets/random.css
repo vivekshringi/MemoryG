@@ -29,7 +29,7 @@ h1 {
   margin-bottom: 40px;
   text-align: center;
   color: #fff;
-  font-size: 3em;
+  font-size: 7em;
   font-weight: bold;
 }
 
@@ -37,6 +37,14 @@ h1 {
   display: flex;
   gap: 20px;
   margin-top: 40px;
+}
+
+p {
+  max-width: 1000px;
+  text-align: center;
+  font-size: 24px;
+  color: #000000;
+  margin-bottom: 20px;
 }
 
 button {

@@ -2,6 +2,7 @@ let randomNumbers = [];
 let index = 0;
 let selectedNumber = [0, 0, 0, 0, 0];
 const circle = document.querySelector('.circle');
+const p = document.querySelector('p');
 function loadText(elem, text) {
   elem.textContent = text;
 }
@@ -58,7 +59,7 @@ window.addEventListener('DOMContentLoaded', function () {
       circle.textContent = 'Correct!';
       console.log('Correct!');
     } else {
-      circle.textContent = 'Wrong! It was ' + correctGuess;
+      circle.textContent = 'Wrong!';
       console.log('InCorrect!');
     }
    selectedNumber.forEach((num, i) => {
@@ -70,16 +71,18 @@ window.addEventListener('DOMContentLoaded', function () {
           console.log(`Button ${buttons[i]} text set to:`+ selectedNumber[i] + 'Correct');
         } else {
           buttons[i].style.backgroundColor = 'red';
+          p.textContent = `The correct number was ${randomNumbers[i]}.`;
           buttons[i].disabled = true;
           console.log(`Button ${buttons[i]} text set to:`+ selectedNumber[i] + ' Wrong');
         }
          buttons[i].textContent = selectedNumber[i];
          this.setTimeout(() => {
           if (countOccurrences(selectedNumber, '0') > 0) {
-           circle.textContent = `You have ${countOccurrences(selectedNumber, '0')} more to guess!`;
+           p.textContent = `You have ${countOccurrences(selectedNumber, '0')} more to guess!`;
          }
           else{
-          circle.textContent = 'Game Over! Click to Restart';
+          circle.textContent = 'Click!';  
+          p.textContent = 'Game Over! Click to Restart if you want to play again.';
           }
         }, 2000);
         }
@@ -94,8 +97,8 @@ window.addEventListener('DOMContentLoaded', function () {
 circle.addEventListener('click', function () {
    console.log('Click index to:', index);
   if (index < 5) {
-    let str = `${randomNumbers[index]}\n${4-index} more to go!`;
-    circle.innerHTML = str.replace(/\n/g, "<br>");
+    circle.innerHTML = randomNumbers[index];
+    p.textContent = `${countOccurrences(selectedNumber) < 4 ? 'Remember this number and click again!' : 'This is the last number, click again!'}  You have seen ${index + 1} out of 5 numbers.`;
     index++;
   } 
   else if (countOccurrences(selectedNumber, 0) === 0) {
@@ -104,6 +107,7 @@ circle.addEventListener('click', function () {
   }
   else {
     circle.textContent = 'Guess!';
+        p.textContent = `Click one of the buttons below to select the number you remember in squence.`;
     localStorage.setItem('randomNumbers', randomNumbers);
   }
 });
