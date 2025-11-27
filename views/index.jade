@@ -7,6 +7,11 @@ block content
   p Welcome to the Cats World
 
   .container
+    // Message display area
+    #messageContainer.message-container(style="display: none;")
+      span#messageText
+      button#closeMessage.close-btn ×
+
     // Form to submit new cat
     form(action="/users" method="POST")
       div
@@ -30,7 +35,8 @@ block content
     // Table to display cats
     table#catsTable
       thead
-        tr
+        tr   
+          th 
           th ID
           th Name
           th Owner
