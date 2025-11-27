@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-let randomNumbers = [];
 
 router.get('/random', function (request, response) {
   response.send(randomInteger());

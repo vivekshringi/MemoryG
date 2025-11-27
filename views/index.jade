@@ -1,20 +1,41 @@
 extends layout
 
 block content
+  link(rel="stylesheet", href="/stylesheets/index.css")
+  
   h1= title
-  p Welcome Flashcard
+  p Welcome to the Cats World
 
-  form(action="/users" method="POST")
-    div
-      label(for="name") Name:
-      input(type="text" name="name" id="name")
-    div
-      label(for="owner") Owner:
-      input(type="text" name="owner" id="owner")
-    div
-      label(for="birth") Birth:
-      input(type="text" name="birth" id="birth")
-    div
-      button(type="submit") Submit
-      button(type="submit") View All 
-      button(type="submit") Delete
+  .container
+    // Form to submit new cat
+    form(action="/users" method="POST")
+      div
+        label(for="name") Name:
+        input(type="text" name="name" id="name" required)
+      div
+        label(for="owner") Owner:
+        input(type="text" name="owner" id="owner" required)
+      div
+        label(for="birth") Birth:
+        input(type="text" name="birth" id="birth" required)
+      div.form-buttons
+        button(type="submit") Submit
+        button#suggest(type="button") Suggest
+    
+    // Buttons for actions
+    div.action-buttons
+      button#viewAllBtn(type="button") View All
+      button#deleteBtn(type="button") Delete
+
+    // Table to display cats
+    table#catsTable
+      thead
+        tr
+          th ID
+          th Name
+          th Owner
+          th Birth
+      tbody
+        // Rows will be populated by JavaScript
+
+    script(src="/javascripts/index.js")
