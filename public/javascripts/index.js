@@ -89,8 +89,9 @@ suggest.addEventListener('click', suggestCat);
 
 // Delete button click handler
 deleteBtn.addEventListener('click', async () => {
-  const selected = document.querySelector('input[type="radio"]:checked');
-  catId = selected.value;
+  const selectedItems = document.querySelectorAll('input[type="radio"]:checked');
+  selectedItems.forEach(async (elem)=>{
+  catId = elem.value;
   if (!catId) return;
   try {
     const response = await fetch(`/users/${catId}`, {
@@ -101,11 +102,12 @@ deleteBtn.addEventListener('click', async () => {
       throw new Error(errorData.error || 'Failed to delete cat');
     }
     showMessage(`Cat with ID ${catId} deleted successfully`, 'success');
-    loadCats(); // refresh table
   } catch (error) {
     console.error('Error deleting cat:', error);
     showMessage('Failed to delete cat: ' + error.message, 'error');
   }
+  })
+loadCats(); // refresh table
 });
 
 // Handle form submission
