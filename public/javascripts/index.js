@@ -4,7 +4,7 @@ const catsTable = document.getElementById('catsTable');
 const messageContainer = document.getElementById('messageContainer');
 const messageText = document.getElementById('messageText');
 const closeMessage = document.getElementById('closeMessage');
-
+const loginBtn = document.getElementById('login');
 // Message display function
 function showMessage(message, type = 'info') {
   messageText.textContent = message;
@@ -71,10 +71,12 @@ async function suggestCat() {
     const name = document.querySelector('#name');
     const owner = document.querySelector('#owner');
     const birth = document.querySelector('#birth');
+    const image = document.querySelector('div>img');
     name.value = cats.name;
     owner.value = cats.owner;
     birth.value = cats.birth;
-    
+    image.setAttribute('src','https://i.pravatar.cc/')
+
     showMessage('Cat suggestion is successfully generated!', 'success');
   } catch (error) {
     console.error('Error loading cats:', error);
@@ -86,6 +88,10 @@ async function suggestCat() {
 viewAllBtn.addEventListener('click', loadCats);
 
 suggest.addEventListener('click', suggestCat);
+
+loginBtn.addEventListener('click', ()=>{
+  window.location.href = "/login"
+});
 
 // Delete button click handler
 deleteBtn.addEventListener('click', async () => {

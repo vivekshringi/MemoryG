@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  link(rel="stylesheet", href="/stylesheets/index.css")
+  h1= title
+  .container
+    // Message display area
+    #messageContainer.message-container(style="display: none;")
+      span#messageText
+      button#closeMessage.close-btn ×
+  form(action="/api/register" method="POST")
+    div
+     label(for="username") Username:
+     input#username(type="text" name="username" placeholder="Username" required)
+    div
+     label(for="password") Password:
+     input(type="text" name="password" id="password" placeholder="Password" required)
+    div
+     label(for="email") Email
+     input#email(type="email" name="email" placeholder="Email address" required)  
+    div
+     label(for="role") Role
+     input#role(type="role" name="role" placeholder="enter admin or user" required)  
+    div.form-buttons
+      button#register(type="submit") Register
+      button#suggest(type="button") Suggest
+    script(src="/javascripts/register.js")

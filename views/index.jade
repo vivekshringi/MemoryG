@@ -2,12 +2,11 @@ extends layout
 
 block content
   link(rel="stylesheet", href="/stylesheets/index.css")
-  
   h1= title
   div(class="image")
     img(src="https://i.pravatar.cc/" alt="User Avatar" height="100", width = "100")
   p Welcome to the Cats World
-
+  button(class="login" id="login") Login
   .container
     // Message display area
     #messageContainer.message-container(style="display: none;")
