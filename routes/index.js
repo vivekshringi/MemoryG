@@ -66,15 +66,16 @@ router.post('/api/login', async (req, res) => {
     console.log(isMatch);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
     const token = jwt.sign({ id: user._id }, 'your_secret_key', { expiresIn: '1h' });
-    res.cookie('access-token', token, { expires: new Date(Date.now() + 300000), httpOnly: true })
-    res.status(200).json({ token, message: 'Logged in successfully' });
+    res.cookie('Authorization', token, { expires: new Date(Date.now() + 300000), httpOnly: true, secure: true });
+    res.cookie('role', user[0][0].role,{ httpOnly: true , secure: true });
+    res.status(200).json({ token, message: 'Logged in successfully', user: user[0][0].role, username: user[0][0].username });
   } catch (err) {
     res.status(500).json({ message: 'Error logging in', error: err.message });
   }
 });
 
 const authMiddleware = (req, res, next) => {
-  const token = req.header('Authorization');
+  const token = req.cookies['Authorization'];
   if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
   try {
     const decoded = jwt.verify(token, 'your_secret_key');
@@ -86,11 +87,13 @@ const authMiddleware = (req, res, next) => {
 };
 
 const roleMiddleware = (requiredRole) => (req, res, next) => {
-  if (req.user.role !== requiredRole) return res.status(403).json({ message: 'Access forbidden' });
+  const role = req.cookies['role'];
+  if (role !== requiredRole) return res.status(403).json({ message: 'Access forbidden' });
   next();
 };
 
 router.get('/api/user', authMiddleware, (req, res) => {
+  console.log(req.cookies);
   res.status(200).json({ message: 'Welcome to the user dashboard', user: req.user });
 });
 
