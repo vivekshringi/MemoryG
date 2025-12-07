@@ -10,7 +10,7 @@ buttons.forEach((button, index) => {
     localStorage.setItem('selected', getNumber);
     selectedNumber[parseInt(getIndex)] = getNumber;
     localStorage.setItem('selectedArray', selectedNumber);
-    window.location.href = '/admin';
+    window.location.href = '/memoryGame';
   });
 });
 

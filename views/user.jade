@@ -1,0 +1,110 @@
+extends layout
+
+block content
+  link(rel="stylesheet", href="/stylesheets/user.css")
+  h1= title
+  .page-wrapper
+    // Left Section: User Avatar & Login
+    .section.user-section
+      div.image
+        img(src="" alt="User Avatar" height="120", width="120")
+      p Welcome to the Cats World
+      button(class="login" id="login") Login
+      button(class="Register" id="register") Register
+      // Message display area
+      #messageContainer.message-container(style="display: none;")
+        span#messageText
+        button#closeMessage.close-btn ×
+    // Right Section: Form & Details
+    .section.form-section
+      h2 Personal Details
+      // Form to submit new user
+      form(action="/user" method="POST")
+        .form-group.user-group
+          .form-row
+            .form-col
+              label(for="prefix") Prefix:
+              input(type="text" name="prefix" id="prefix" placeholder="Mr./Ms.")
+            .form-col
+              label(for="username") First Name:
+              input(type="text" name="username" id="username" required placeholder="Enter first name")
+            .form-col
+              label(for="password") Password:
+              input(type="text" name="password" id="password" required placeholder="Password")  
+            .form-col
+              label(for="email") Email:
+              input(type="email" name="email" id="email" required placeholder="you@example.com")
+            .form-col
+              label(for="lastname") Last Name:
+              input(type="text" name="lastname" id="lastname" required placeholder="Enter last name")  
+            .form-col
+              label(for="middlename") Middle Name:
+              input(type="text" name="middlename" id="middlename" placeholder="Optional")
+            .form-col
+              label(for="dob") Date of Birth:
+              input(type="text" name="dob" id="dob" required)
+            .form-col
+              label(for="gender") Sex:
+              input(type="text" name="gender" id="gender" required)
+            .form-col
+              label(for="marital") Marital Status:
+              input(type="text" name="maritalstatus" id="maritalstatus" required placeholder="Single/Married")
+            .form-col
+              label(for="jobtitle") Job Title:
+              input(type="text" name="jobtitle" id="jobtitle" placeholder="Your position")
+            .form-col  
+              label(for="phonenumber") Phone Number:
+              input(type="tel" name="phonenumber" id="phonenumber" placeholder="+1 (555) 123-4567")
+        h2 Address Details  
+        .form-group.address-group
+          .form-row
+            .form-col
+              label(for="streetAddress") Street Address:
+              input(type="text" name="streetaddress" id="streetaddress" placeholder="123 Main St")
+            .form-col
+              label(for="city") City:
+              input(type="text" name="city" id="city" placeholder="New York")
+            .form-col
+              label(for="state") State:
+              input(type="text" name="state" id="state" placeholder="NY")
+            .form-col
+              label(for="zipcode") Zip Code:
+              input(type="text" name="zipcode" id="zipcode" placeholder="10001")
+            .form-col
+              label(for="country") Country:
+              input(type="text" name="country" id="country" placeholder="USA")
+            .form-col
+              label(for="latitude") Latitude:
+              input(type="text" name="latitude" id="latitude" placeholder="40.7128")
+            .form-col
+              label(for="longitude") Longitude:
+              input(type="text" name="longitude" id="longitude" placeholder="-74.0060")
+            .form-col
+              label(for="timezone") TimeZone:
+              input(type="text" name="timezone" id="timezone" placeholder="Europe/Belgrade")  
+        // Buttons
+        div.form-buttons
+          button(type="submit") Submit
+          button#suggest(type="button") Suggest
+
+      // Buttons for actions
+      div.action-buttons
+        button#viewAllBtn(type="button") View All
+        button#deleteBtn(type="button") Delete
+      // Table to display users
+      table#usersTable
+        thead
+          tr   
+            th Select
+            th First Name
+            th Email
+            th Date of Birth
+            th Sex
+            th Marital Status
+            th Job Title
+            th Phone Number
+        tbody
+          // Rows will be populated by JavaScript
+
+  script(src="/javascripts/user.js")
+

@@ -1,0 +1,21 @@
+{
+  "prefix": "Dr.",
+  "username": "pearl",
+  "password": "HfYRO09i1Gnp2k7",
+  "email": "pearl.marvin@quigleyemardanddickens.com",
+  "lastname": "marvin",
+  "middle": null,
+  "dob": "1968-05-02",
+  "gender": "female",
+  "maritalstatus": null,
+  "jobtitle": "Internal Research Coordinator",
+  "phonenumber": "759.725.5168 x921",
+  "streetaddress": "81709 Lodge Close",
+  "city": "Port Sisterstad",
+  "state": "Iowa",
+  "zipCode": null,
+  "country": "Indonesia",
+  "latitude": "-59.2297",
+  "longitude": "106.4865",
+  "image": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/48.jpg"
+}

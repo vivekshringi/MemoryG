@@ -8,7 +8,7 @@ function loadText(elem, text) {
 }
 
 function requestData() {
-  fetch('/admin/random') 
+  fetch('/random') 
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok: ' + response.status);
@@ -103,7 +103,7 @@ circle.addEventListener('click', function () {
   } 
   else if (countOccurrences(selectedNumber, 0) === 0) {
        localStorage.clear();
-       window.location.href = '/admin';
+       window.location.href = '/memoryGame';
   }
   else {
     circle.textContent = 'Guess!';
@@ -123,7 +123,7 @@ buttons.forEach((button, buttonIndex) => {
       console.log('selected number:', selectedNumber);
       setStorageItem('index', buttonIndex);
       setStorageItem('selectedArray', selectedNumber);
-      window.location.href = '/admin/guess';
+      window.location.href = '/guess';
     }
   });
 });
