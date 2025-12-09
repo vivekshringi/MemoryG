@@ -6,6 +6,7 @@ const messageText = document.getElementById('messageText');
 const closeMessage = document.getElementById('closeMessage');
 const loginBtn = document.getElementById('login');
 const registerBtn = document.getElementById('register');
+
 // Message display function
 function showMessage(message, type = 'info') {
   messageText.textContent = message;
@@ -58,11 +59,10 @@ async function loadUsers() {
       `;
       tbody.appendChild(row);
     });
-    
-    //showMessage(`Successfully loaded ${cats.length} cat(s)`, 'success');
+     showMessage(`Successfully loaded ${users.length} users(s)`, 'success');
   } catch (error) {
-    console.error('Error loading cats:', error);
-    showMessage('Failed to load cats: ' + error.message, 'error');
+    console.error('Error loading users:', error);
+    showMessage('Failed to load users: ' + error.message, 'error');
   }
 }
 
@@ -153,7 +153,7 @@ deleteBtn.addEventListener('click', async () => {
     showMessage('Failed to delete user: ' + error.message, 'error');
   }
   })
-loadCats(); // refresh table
+loadUsers(); // refresh table
 });
 
 // Handle form submission
@@ -197,13 +197,14 @@ form.addEventListener('submit', async (e) => {
     console.log(data);
     if (!response.ok) {
       const errorData = await response.json();
+      showMessage('Failed to add user: ' + (errorData.error || 'Unknown error'), 'error');
       throw new Error(errorData.error || 'Failed to add user');
     }
     
     const result = await response.json();
-    showMessage(`User "${data.name}" added successfully! (ID: ${result.insertId})`, 'success');
+    showMessage(`User "${data.username}" added successfully! (ID: ${result.insertId})`, 'success');
     form.reset(); // clear form
-    // loadUsers(); // refresh table
+    loadUsers(); // refresh table
   } catch (error) {
     console.error('Error adding user:', error);
     showMessage('Failed to add user: ' + error.message, 'error');

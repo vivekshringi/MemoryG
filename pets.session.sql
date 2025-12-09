@@ -130,3 +130,53 @@ TRUNCATE TABLE users;
 
 -- Re-enable (critical!)
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+SELECT 
+    u.id, u.username, u.email, u.role, u.image_url,
+    p.prefix, p.firstname, p.middlename, p.lastname, p.gender, p.birthdate, p.maritalstatus, p.jobtitle, p.phone,
+    l.streetAddress, l.city, l.state, l.zipCode, l.latitude
+FROM users u
+JOIN persons p ON u.id   = p.users_id
+JOIN locations l ON p.users_id = l.users_id
+WHERE u.id = 1;
+
+
+DELETE FROM users WHERE id = 2; 
+FROM users u
+JOIN persons p ON u.id   = p.users_id
+JOIN locations l ON p.users_id = l.users_id
+WHERE u.id = 1;
+
+
+SELECT 
+    u.id, u.username, u.email, u.role, u.image_url,
+    p.prefix, p.firstname, p.middlename, p.lastname, p.gender, p.birthdate, p.maritalstatus, p.jobtitle, p.phone,
+    l.streetAddress, l.city, l.state, l.zipCode, l.latitude
+FROM users u
+JOIN persons p ON u.id   = p.users_id
+JOIN locations l ON p.users_id = l.users_id
+WHERE u.id = 1;
+
+
+UPDATE persons SET prefix = "marsha§", firstname = "marsha§", lastname = "marsha§", middlename = "marsha§", gender = "user", birthdate = "1948-10-16", maritalstatus = "Single", jobtitle = "Senior Advison", phone = "01621111" WHERE users_id = 85;
+select * from users where id = 85;
+DELETE FROM users WHERE id = 85;
+
+ALTER TABLE users DROP FOREIGN KEY fk_constraint_name;
+ALTER TABLE child_table ADD CONSTRAINT fk_constraint_name 
+    FOREIGN KEY (child_column) REFERENCES parent_table(parent_column) 
+    ON DELETE CASCADE;
+
+    SELECT * FROM information_schema.table_constraints 
+WHERE table_schema = 'pets' AND table_name = 'persons';
+
+ALTER TABLE persons DROP FOREIGN KEY fk_constraint_name;
+ALTER TABLE child_table ADD CONSTRAINT fk_constraint_name 
+    FOREIGN KEY (child_column) REFERENCES parent_table(parent_column) 
+    ON DELETE CASCADE;
+
+
+    DELETE locations Where users_id = 85;
+    DELETE persons Where users_id = 85;
+    DELETE users Where id = 85;
