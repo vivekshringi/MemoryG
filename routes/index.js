@@ -270,7 +270,7 @@ router.delete(
 );
 
 // ===== FAKER/RANDOM ROUTES =====
-router.get('/api/random', [authMiddleware, roleMiddleware('user')], (req, res) => {
+router.get('/api/random', authMiddleware, (req, res) => {
   res.send(randomInteger());
 });
 
