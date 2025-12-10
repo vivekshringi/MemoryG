@@ -30,7 +30,7 @@ closeMessage.addEventListener('click', hideMessage);
 // Fetch and display all cats
 async function loadUsers() {
   try {
-    const response = await fetch('/user');
+    const response = await fetch('/api/user');
     if (!response.ok) throw new Error('Failed to fetch user');
     
     const users = await response.json();
@@ -68,7 +68,7 @@ async function loadUsers() {
 
 async function suggestUser() {
   try {
-    const response = await fetch('/randomUser');
+    const response = await fetch('/api/randomUser');
     if (!response.ok) throw new Error('Failed to fetch user suggestion');
     
     const user = await response.json();
@@ -140,7 +140,7 @@ deleteBtn.addEventListener('click', async () => {
   userId = elem.value;
   if (!userId) return;
   try {
-    const response = await fetch(`/users/${userId}`, {
+    const response = await fetch(`/api/users/${userId}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
@@ -187,7 +187,7 @@ form.addEventListener('submit', async (e) => {
   };
   
   try {
-    const response = await fetch('/user', {
+    const response = await fetch('/api/user', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

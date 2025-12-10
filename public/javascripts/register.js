@@ -27,7 +27,7 @@ closeMessage.addEventListener('click', hideMessage);
 
 async function suggestUser() {
   try {
-    const response = await fetch('/randomUser');
+    const response = await fetch('/api/randomUser');
     if (!response.ok) throw new Error('Failed to fetch cat suggestion');
     
     const user = await response.json();

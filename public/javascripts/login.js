@@ -1,4 +1,3 @@
-
 const messageContainer = document.getElementById('messageContainer');
 const messageText = document.getElementById('messageText');
 const closeMessage = document.getElementById('closeMessage');
@@ -17,17 +16,53 @@ function showMessage(message, type = 'info') {
 }
 
 function successLogin(user) {
-  loginBtn.textContent="Logout";
-  document.getElementById('emailForm').style.display ='none';
-  document.getElementById('passwordForm').style.display ='none';
-  registerBtn.textContent = user;
-  registerBtn.disabled='true';
+  const buttonContainer = document.getElementsByClassName('form-buttons');
+  const logoutBtn = document.createElement('button');
+  logoutBtn.textContent = 'Logout';
+  logoutBtn.className = 'logout-btn';
+
+  const memoryBtn = document.createElement('button');
+  memoryBtn.textContent = 'Navigate to Memory Game';
+  memoryBtn.className = 'memory-btn';
+  memoryBtn.addEventListener('click', () => {
+    window.location.href = '/memorygame';
+  });   
+  const username = document.createElement('div');
+  buttonContainer[0].appendChild(username);
+  buttonContainer[0].appendChild(memoryBtn);
+  buttonContainer[0].appendChild(logoutBtn);
+
+  username.textContent = `Welcome, ${user}`;
+  username.className = 'username-display';
+
+  loginBtn.style.display = 'none';
+  registerBtn.style.display = 'none';
+  document.getElementById('emailForm').style.display = 'none';
+  document.getElementById('passwordForm').style.display = 'none';
+
+  logoutBtn.addEventListener('click', () => {
+    // Remove authentication cookies
+    removeCookie('Authorization');
+    removeCookie('role');
+    showMessage('Logged out successfully', 'success');
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 50);
+  });
+  };
+
+
+
+function removeCookie(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
 
 // Hide message function
 function hideMessage() {
   messageContainer.style.display = 'none';
 }
+
+
 
 registerBtn.addEventListener('click', ()=>{
   window.location.href = "/register"
