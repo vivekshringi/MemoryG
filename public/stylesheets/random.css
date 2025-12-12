@@ -1,62 +1,278 @@
-body {
-  font-family: sans-serif;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 12px;
 }
 
 h1 {
   text-align: center;
-  margin-top: 20px;
-  color: #333;
+  color: #fff;
+  margin-bottom: 24px;
+  font-size: clamp(1.8em, 5vw, 2.8em);
+  font-weight: 700;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  letter-spacing: 1px;
 }
 
-.container {
+p {
+  text-align: center;
+  color: rgba(255,255,255,0.95);
+  margin-bottom: 20px;
+  font-size: clamp(0.95em, 2.5vw, 1.1em);
+  font-weight: 500;
+}
+
+/* Container */
+#container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 90vh;
+  min-height: 90vh;
+  padding: clamp(12px, 4vw, 20px);
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
+/* Circle Styles */
 .circle {
-  width: 500px;
-  height: 500px;
+  width: clamp(200px, 80vw, 500px);
+  height: clamp(200px, 80vw, 500px);
   border-radius: 50%;
-  background: #4285f4;
+  background: linear-gradient(135deg, #4285f4 0%, #357ae8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: clamp(20px, 5vw, 40px);
   text-align: center;
   color: #fff;
-  font-size: 7em;
+  font-size: clamp(2.5em, 10vw, 7em);
+  font-weight: bold;
+  box-shadow: 0 15px 45px rgba(66, 133, 244, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.circle:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 55px rgba(66, 133, 244, 0.5);
+}
+
+/* Circle with nested circles */
+.circle-number1 {
+  position: relative;
+  width: clamp(200px, 80vw, 500px);
+  height: clamp(200px, 80vw, 500px);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4285f4 0%, #357ae8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: clamp(20px, 5vw, 40px);
+  box-shadow: 0 15px 45px rgba(66, 133, 244, 0.4);
+  font-size: clamp(1.5em, 5vw, 3em);
+  color: #fff;
   font-weight: bold;
 }
 
-.button-group {
+.circle-number2 {
+  position: absolute;
+  width: 45%;
+  height: 45%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ea4335 0%, #d33425 100%);
   display: flex;
-  gap: 20px;
-  margin-top: 40px;
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: clamp(1em, 3vw, 1.8em);
+  font-weight: bold;
+  box-shadow: inset 0 -4px 8px rgba(0,0,0,0.12);
 }
 
-p {
-  max-width: 1000px;
-  text-align: center;
-  font-size: 24px;
-  color: #000000;
-  margin-bottom: 20px;
+/* Message Board */
+.message-board {
+  width: 100%;
+  margin: clamp(12px, 4vw, 30px) auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 2vw, 12px);
+  padding: clamp(10px, 3vw, 12px);
+}
+
+.message {
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,246,250,0.95));
+  border-radius: 12px;
+  padding: clamp(10px, 3vw, 12px) clamp(12px, 3vw, 14px);
+  box-shadow: 0 6px 18px rgba(32,33,36,0.06);
+  display: flex;
+  gap: clamp(8px, 2vw, 12px);
+  align-items: flex-start;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+.message .avatar {
+  flex: 0 0 clamp(36px, 8vw, 44px);
+  width: clamp(36px, 8vw, 44px);
+  height: clamp(36px, 8vw, 44px);
+  border-radius: 50%;
+  background: #e6eefc;
+  color: #164e9d;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: clamp(0.8em, 2vw, 0.95em);
+  box-shadow: inset 0 -3px 6px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+
+.message .content {
+  flex: 1;
+  min-width: 0;
+}
+
+.message .content .meta {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: clamp(0.75em, 2vw, 0.85em);
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.message .content .text {
+  font-size: clamp(0.9em, 2.5vw, 1rem);
+  line-height: 1.45;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.message.success {
+  border-left: 4px solid #16a34a;
+  background: linear-gradient(180deg, rgba(237,249,237,0.9), rgba(245,255,248,0.9));
+}
+
+.message.warning {
+  border-left: 4px solid #f59e0b;
+  background: linear-gradient(180deg, rgba(255,250,235,0.9), rgba(255,249,230,0.9));
+}
+
+.message.error {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(180deg, rgba(255,242,242,0.95), rgba(255,236,236,0.95));
+}
+
+.message:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(32,33,36,0.12);
+}
+
+.p-hint {
+  font-size: clamp(0.85em, 2.5vw, 0.95em);
+  color: #475569;
+}
+
+.p-note {
+  display: inline-block;
+  background: rgba(15,23,42,0.03);
+  padding: clamp(4px, 1vw, 6px) clamp(6px, 1.5vw, 8px);
+  border-radius: 6px;
+  font-size: clamp(0.75em, 2vw, 0.85em);
+  color: #334155;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  gap: clamp(10px, 3vw, 20px);
+  margin-top: clamp(16px, 5vw, 40px);
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
 
 button {
-  padding: 12px 22px;
-  font-size: 1.1em;
+  padding: clamp(10px, 2.5vw, 12px) clamp(18px, 4vw, 22px);
+  font-size: clamp(0.9em, 2.5vw, 1.1em);
   border: none;
-  border-radius: 6px;
-  background: #333;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #333 0%, #555 100%);
   color: #fff;
   cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 44px;
+  min-width: 80px;
 }
 
 button:hover {
-  background: #555;
+  background: linear-gradient(135deg, #555 0%, #777 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button.success {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+}
+
+button.success:hover {
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.3);
+}
+
+button.error {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+button.error:hover {
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.8em;
+    margin-bottom: 16px;
+  }
+
+  .container {
+    justify-content: flex-start;
+    min-height: auto;
+    padding-top: 12px;
+  }
+
+  .circle,
+  .circle-number1 {
+    margin-bottom: 16px;
+  }
+
+  .button-group {
+    gap: 8px;
+  }
+
+  button {
+    flex: 1;
+    min-width: 70px;
+  }
+
+  .message-board {
+    margin: 16px auto;
+  }
+
+  .message {
+    padding: 10px 12px;
+  }
 }

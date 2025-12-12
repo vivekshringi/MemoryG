@@ -180,3 +180,11 @@ ALTER TABLE child_table ADD CONSTRAINT fk_constraint_name
     DELETE locations Where users_id = 85;
     DELETE persons Where users_id = 85;
     DELETE users Where id = 85;
+
+
+
+    SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE 
+FROM information_schema.TABLE_CONSTRAINTS 
+WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND CONSTRAINT_TYPE = 'UNIQUE';
+
+ALTER TABLE users DROP INDEX username;

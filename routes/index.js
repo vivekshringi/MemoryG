@@ -61,7 +61,8 @@ const authMiddleware = (req, res, next) => {
 
 const roleMiddleware = (requiredRole) => (req, res, next) => {
   const role = req.cookies['role'];
-  if (role !== requiredRole) return res.status(403).json({ message: 'Access forbidden! you do not have sufficient rights' });
+  console.log(requiredRole.includes(role));
+  if (!requiredRole.includes(role)) return res.status(403).json({ message: 'Access forbidden! you do not have sufficient rights' });
   next();
 };
 
@@ -74,7 +75,7 @@ async function createUserWithRelatedData(pool, userData, personData, locationDat
 
     const [userResult] = await connection.execute(
       'INSERT INTO users (username, password, email, image_url, role) VALUES (?, ?, ?, ?, ?)',
-      [userData.username, hashedPassword, userData.email, userData.image, 'user'],
+      [userData.username, hashedPassword, userData.email, userData.image, userData.role],
     );
     const userId = userResult.insertId;
 
@@ -177,31 +178,33 @@ router.post(
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const [[user]] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    console.log(user);
+    console.log(password);
+    console.log(await bcrypt.compare(password, user.password));
+    if (!user || !(await bcrypt.compare(password.trim(), user.password))) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('Authorization', token, { expires: new Date(Date.now() + 3600000), httpOnly: true, secure: true });
-    res.cookie('role', user.role, { httpOnly: true, secure: true });
-
+    res.cookie('Authorization', token, { expires: new Date(Date.now() + 3600000)}, { httpOnly: false });
+    res.cookie('role', user.role , { httpOnly: false });
+    res.cookie('username', user.username, { httpOnly: false });
     return res.status(200).json({ token, message: 'Logged in successfully', user: user.role, username: user.username });
   }),
 );
 
 // ===== PROTECTED ROUTES =====
-router.get('/api/user', authMiddleware, asyncHandler(async (req, res) => {
+router.get('/api/user', asyncHandler(async (req, res) => {
   const query = 'SELECT u.id, u.username, u.email, p.birthdate, p.gender, p.maritalstatus, p.jobtitle, p.phone FROM users u JOIN persons p ON u.id = p.users_Id';
   const [rows] = await pool.query(query);
   return res.json(rows);
 }));
 
-router.get('/api/user/:id', authMiddleware, asyncHandler(async (req, res) => {
+router.get('/api/user/:id', asyncHandler(async (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
 
-  const query = `SELECT u.id, u.username, u.email, u.role, u.image_url, p.prefix, p.firstname, p.middlename, p.lastname, p.gender, p.birthdate, p.maritalstatus, p.jobtitle, p.phone, l.streetAddress, l.city, l.state, l.zipCode, l.latitude FROM users u JOIN persons p ON u.id = p.users_id JOIN locations l ON p.users_id = l.users_id WHERE u.id = ?`;
+  const query = `SELECT u.id, u.username, u.password, u.email, u.role, u.image_url, p.prefix, p.firstname, p.middlename, p.lastname, p.gender, p.birthdate, p.maritalstatus, p.jobtitle, p.phone, l.streetAddress, l.city, l.state, l.zipcode, l.latitude, l.longitude, l.timezone, l.country FROM users u JOIN persons p ON u.id = p.users_id JOIN locations l ON p.users_id = l.users_id WHERE u.id = ?`;
   const [[row]] = await pool.query(query, [id]);
 
   if (!row) return res.status(404).json({ error: 'Not found' });
@@ -211,9 +214,9 @@ router.get('/api/user/:id', authMiddleware, asyncHandler(async (req, res) => {
 router.post(
   '/api/user',
   asyncHandler(async (req, res) => {
-    const { prefix, username, password, email, lastname, middlename, dob, gender, maritalstatus, jobtitle, phonenumber, streetaddress, city, state, zipcode, country, latitude, longitude, timezone, image } = req.body || {};
+    const { prefix, username, password, email, role, lastname, middlename, dob, gender, maritalstatus, jobtitle, phonenumber, streetaddress, city, state, zipcode, country, latitude, longitude, timezone, image } = req.body || {};
 
-    const fields = [username, password, email, prefix, middlename, lastname, gender, dob, maritalstatus, jobtitle, phonenumber, streetaddress, city, state, zipcode, country, latitude, longitude, timezone, image];
+    const fields = [prefix, username, password, email, role, lastname, middlename,  gender, dob, maritalstatus, jobtitle, phonenumber, streetaddress, city, state, zipcode, country, latitude, longitude, timezone, image];
 
     if (!fields.every(isValidString)) {
       return res.status(400).json({ error: 'Missing or invalid fields' });
@@ -221,7 +224,7 @@ router.post(
 
     const userId = await createUserWithRelatedData(
       pool,
-      { username, password, email, image },
+      { username, password, email, image ,role },
       { prefix, username, middlename, lastname, gender, dob, maritalstatus, jobtitle, phonenumber },
       { streetaddress, city, country, state, zipcode, latitude, longitude, timezone },
     );
@@ -270,7 +273,7 @@ router.delete(
 );
 
 // ===== FAKER/RANDOM ROUTES =====
-router.get('/api/random', authMiddleware, (req, res) => {
+router.get('/api/random', (req, res) => {
   res.send(randomInteger());
 });
 
@@ -324,13 +327,13 @@ router.get('/api/randomUser', asyncHandler(async (req, res) => {
 }));
 
 // ===== PAGE ROUTES =====
-router.get('/form', (req, res) => res.render('user', { title: 'user' }));
+router.get('/form', authMiddleware, roleMiddleware(['admin']), (req, res) => res.render('user', { title: 'Welcome!' }));
 router.get('/login', (req, res) => res.render('login', { title: 'Login' }));
 router.get('/register', (req, res) => res.render('register', { title: 'Register' }));
 
 
-router.get('/memorygame', authMiddleware, (req, res) => {
-  res.render('random', { title: randomInteger().toString() });
+router.get('/memorygame', authMiddleware, roleMiddleware(['admin','user']), (req, res) => {
+  res.render('random', { title: 'Memory Game' });
 });
 
 router.get('/guess', (req, res) => res.render('guess', { title: 'Guess' }));

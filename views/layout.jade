@@ -1,7 +1,43 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+  title= title
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  link(rel="stylesheet", href="/stylesheets/navbar.css")
   body
-    block content
+    .container
+      // Message display area
+      #messageContainer.message-container(style="display: none;")
+       span#messageText
+       button#closeMessage.close-btn ×
+    // Navigation Bar
+    nav.navbar
+      .navbar-container
+        .navbar-brand
+          a(href="/") My Application
+        
+        // Mobile Menu Toggle
+        button.navbar-toggle(id="navbarToggle")
+          span
+          span
+          span
+        
+        // Navigation Links
+        ul.navbar-menu(id="navbarMenu")
+          li.navbar-item
+            a#user(href="/form" class="navbar-link") User Management
+          li.navbar-item
+            a#memory(href="/memorygame" class="navbar-link") Memory Game  
+          li.navbar-item
+            a(href="/register" class="navbar-link") Register New User
+          li.navbar-item
+            a#login(href="/login" class="navbar-link") Login
+          li.navbar-item
+            label(id="userRole") 
+          li.navbar-item
+            label(id="usernameDisplay")
+    // Page Content
+    .page-content
+      block content
+
+    script(src="/javascripts/navbar.js")

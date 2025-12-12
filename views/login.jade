@@ -3,13 +3,7 @@ extends layout
 
 block content
   link(rel="stylesheet", href="/stylesheets/user.css")
-  h1= title
-  .container
-    // Message display area
-    #messageContainer.message-container(style="display: none;")
-      span#messageText
-      button#closeMessage.close-btn ×
-  form(action="/api/login" method="POST")
+  form(action="/login" method="GET")
     div(id='emailForm')
      label(for="email") Email Address:
      input#email(type="email" name="email" required)
@@ -17,6 +11,5 @@ block content
      label(for="password") Password:
      input(type="text" name="password" id="password" required)
     div.form-buttons
-      button#login(type="submit") Login
-      button#register(type="button") Register
+      button#loginUser(type="submit") Login
     script(src="/javascripts/login.js")

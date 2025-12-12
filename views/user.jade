@@ -8,20 +8,17 @@ block content
     .section.user-section
       div.image
         img(src="" alt="User Avatar" height="120", width="120")
-      p Welcome to the Cats World
-      button(class="login" id="login") Login
-      button(class="Register" id="register") Register
-      // Message display area
-      #messageContainer.message-container(style="display: none;")
-        span#messageText
-        button#closeMessage.close-btn ×
+      p Welcome to the Admin User Management Page!
     // Right Section: Form & Details
     .section.form-section
       h2 Personal Details
       // Form to submit new user
-      form(action="/user" method="POST")
+      form(action="/api/user" method="POST" id="userForm")
         .form-group.user-group
           .form-row
+            .form-col
+              label(for="UserID") UserID:
+              span#userID
             .form-col
               label(for="prefix") Prefix:
               input(type="text" name="prefix" id="prefix" placeholder="Mr./Ms.")
@@ -34,6 +31,9 @@ block content
             .form-col
               label(for="email") Email:
               input(type="email" name="email" id="email" required placeholder="you@example.com")
+            .form-col
+              label(for="role") Role:
+              input(type="role" name="role" id="role" required placeholder="user/admin")  
             .form-col
               label(for="lastname") Last Name:
               input(type="text" name="lastname" id="lastname" required placeholder="Enter last name")  
@@ -86,11 +86,15 @@ block content
         div.form-buttons
           button(type="submit") Submit
           button#suggest(type="button") Suggest
-
+      // Message display area
+      #messageContainer.message-container(style="display: none;")
+        span#messageText
+        button#closeMessage.close-btn ×
       // Buttons for actions
       div.action-buttons
         button#viewAllBtn(type="button") View All
         button#deleteBtn(type="button") Delete
+        button#editBtn(type="button") Edit
       // Table to display users
       table#usersTable
         thead
