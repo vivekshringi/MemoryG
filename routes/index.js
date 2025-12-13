@@ -20,6 +20,31 @@ const pool = mysql.createPool({
 const JWT_SECRET = env.parsed.JWT_SECRET || 'default_secret';
 
 // ===== UTILITIES =====
+
+function shuffleArray(arr) {
+  let i = arr.length, j, temp;
+  while(--i > 0){
+    j = Math.floor(Math.random()*(i+1));
+    temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
+  }
+  return arr;
+}
+
+function getArray(){
+  const numbers = [];
+  let randomNumbers = getRandomInt(3);
+  for (let index = 0; index < 16; index++) {
+      numbers[index] = `${parseInt(index/2)}${randomNumbers}.svg`;
+  }
+  return numbers
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 function isValidString(v) {
   return typeof v === 'string' && v.trim().length > 0;
 }
@@ -49,7 +74,7 @@ function randomInteger() {
 // ===== MIDDLEWARE =====
 const authMiddleware = (req, res, next) => {
   const token = req.cookies['Authorization'];
-  if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
+ if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
@@ -173,6 +198,21 @@ router.post(
 );
 
 router.post(
+  '/api/results',
+  asyncHandler(async (req, res) => {
+    console.log(req.body);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    const { correct, total, expected, actual, email } = req.body;
+    const [[user]] = await pool.query('SELECT id FROM users WHERE email = ?', [email]);
+    console.log(user);
+    const [result] = await pool.execute('INSERT INTO results (correct, total, expected, actual, users_id) VALUES (?, ?, ?, ?, ?)', [correct, total, expected, actual, user.id]);
+    console.log(result);
+    return res.status(201).json({ message: 'Results are sent to server', insertId: result.insertId });
+  }),
+);
+
+router.post(
   '/api/login',
   [body('email').isEmail().withMessage('Enter a valid email'), body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')],
   asyncHandler(async (req, res) => {
@@ -188,7 +228,7 @@ router.post(
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
     res.cookie('Authorization', token, { expires: new Date(Date.now() + 3600000)}, { httpOnly: false });
     res.cookie('role', user.role , { httpOnly: false });
-    res.cookie('username', user.username, { httpOnly: false });
+    res.cookie('email', user.email, { httpOnly: false });
     return res.status(200).json({ token, message: 'Logged in successfully', user: user.role, username: user.username });
   }),
 );
@@ -272,6 +312,18 @@ router.delete(
   }),
 );
 
+router.get('/api/numbers', (req, res) => {
+  try{  let numbers = getArray();
+  let finalArray = shuffleArray(numbers);
+  res.send({"numbers":finalArray})
+}
+catch(error){
+    console.error('api/numbers error:', error);
+    // always send numeric status
+    return res.status(500).json({ error: error.message || 'Internal Server Error' });
+}
+})
+
 // ===== FAKER/RANDOM ROUTES =====
 router.get('/api/random', (req, res) => {
   res.send(randomInteger());
@@ -330,12 +382,10 @@ router.get('/api/randomUser', asyncHandler(async (req, res) => {
 router.get('/form', authMiddleware, roleMiddleware(['admin']), (req, res) => res.render('user', { title: 'Welcome!' }));
 router.get('/login', (req, res) => res.render('login', { title: 'Login' }));
 router.get('/register', (req, res) => res.render('register', { title: 'Register' }));
-
-
+router.get ('/game',(req, res) => res.render('game',{ title: 'Memory Game'}));
 router.get('/memorygame', authMiddleware, roleMiddleware(['admin','user']), (req, res) => {
   res.render('random', { title: 'Memory Game' });
 });
-
 router.get('/guess', (req, res) => res.render('guess', { title: 'Guess' }));
 
 module.exports = router;

@@ -39,7 +39,7 @@ onload = () => {
     const usernameDisplay = document.getElementById('usernameDisplay');
     const userRole = document.getElementById('userRole');
     // Assuming the username and role are stored in cookies for simplicity
-    usernameDisplay.textContent = `Welcome, ${getCookie('username') || 'User'}`;
+    usernameDisplay.textContent = `Welcome, ${getCookie('email') || 'email'}`;
     usernameDisplay.className = 'username-display';
     userRole.textContent = `Role: ${getCookie('role') || 'N/A'}`;
     userRole.className = 'role-display';

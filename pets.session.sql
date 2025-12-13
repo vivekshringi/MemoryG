@@ -30,6 +30,19 @@ CREATE TABLE locations (
     FOREIGN KEY (users_id) REFERENCES users(id)
 );
 
+CREATE TABLE results (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    correct INT,
+    total INT,
+    expected VARCHAR(50),
+    users_id INT,
+    created DATE DEFAULT (CURRENT_DATE),
+    FOREIGN KEY (users_id) REFERENCES users(id)
+);
+
+
+
+
 DROP TABLE persons;
 
 ALTER TABLE persons 
@@ -188,3 +201,9 @@ FROM information_schema.TABLE_CONSTRAINTS
 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND CONSTRAINT_TYPE = 'UNIQUE';
 
 ALTER TABLE users DROP INDEX username;
+
+INSERT INTO results (correct, total, expected, actual, users_id) 
+VALUES (3, 5,  '{12, 23, 23, 12, 11}', '{11, 23, 23, 12, 11}', 129);
+
+ALTER TABLE results 
+ADD COLUMN actual VARCHAR(50);

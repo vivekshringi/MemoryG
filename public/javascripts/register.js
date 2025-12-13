@@ -27,7 +27,7 @@ closeMessage.addEventListener('click', hideMessage);
 
 async function suggestUser() {
   try {
-    const response = await fetch('/randomUser');
+    const response = await fetch('/api/randomUser');
     if (!response.ok) throw new Error('Failed to fetch cat suggestion');
     
     const user = await response.json();
@@ -41,7 +41,7 @@ async function suggestUser() {
     role.value = user.role;
     showMessage('User suggestion is successfully generated!', 'success');
   } catch (error) {
-    console.error('Error loading cats:', error);
+    console.error('Error loading user:', error);
     showMessage('Failed to generate suggestion: ' + error.message, 'error');
   }
 }
